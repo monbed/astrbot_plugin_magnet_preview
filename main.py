@@ -7,8 +7,8 @@ import aiohttp
 from astrbot.api import logger, AstrBotConfig
 from astrbot.api.event import AstrMessageEvent, filter, MessageChain
 from astrbot.api.star import Star, register, Context
-import astrbot.api.message_components as Comp # 引入消息组件
-from astrbot.api.message_components import Plain, Node, Nodes # 引入合并转发组件
+import astrbot.api.message_components as Comp
+from astrbot.api.message_components import Plain, Node, Nodes
 
 DEFAULT_WHATSLINK_URL = "https://whatslink.info" 
 DEFAULT_TIMEOUT = 10
@@ -25,7 +25,7 @@ FILE_TYPE_MAP = {
     'unknown': '❓ 其他'
 }
 
-@register("astrbot_plugin_magnet_preview", "Foolllll", "预览磁力链接", "0.1")
+@register("astrbot_plugin_magnet_preview", "Foolllll", "预览磁链信息", "1.0")
 class MagnetPreviewer(Star):
     
     def __init__(self, context: Context, config: AstrBotConfig):
@@ -69,7 +69,7 @@ class MagnetPreviewer(Star):
             yield event.plain_result("⚠️ 格式错误，未找到有效的磁力链接。")
             return
             
-        yield event.plain_result(f"⚙️ 正在解析磁力链接：{link[:60]}...")
+        logger.info(f"解析磁力链接: {link}")
 
         # 2. 调用 API 解析
         data = await self._fetch_magnet_info(link)
